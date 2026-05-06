@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | LoanAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="split-container">
+        <!-- Info Side with Points -->
+        <div class="info-side">
+            <h1 style="font-size: 3.5rem; margin-bottom: 20px;">Precision<br><span style="color: var(--secondary);">AI Lending</span></h1>
+            
+            <p style="font-size: 1.1rem; opacity: 0.8; margin-bottom: 30px;">
+                Experience the future of credit assessment with our machine learning core.
+            </p>
+
+            <!-- THE POINTS -->
+            <ul class="points-list" style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 15px; display: flex; align-items: center; font-size: 1.1rem;">
+                    <span style="color: var(--secondary); margin-right: 15px; font-weight: bold;">✓</span> 
+                    Instant AI-Driven Approval Analysis
+                </li>
+                <li style="margin-bottom: 15px; display: flex; align-items: center; font-size: 1.1rem;">
+                    <span style="color: var(--secondary); margin-right: 15px; font-weight: bold;">✓</span> 
+                    Detailed Risk Level Categorization
+                </li>
+                <li style="margin-bottom: 15px; display: flex; align-items: center; font-size: 1.1rem;">
+                    <span style="color: var(--secondary); margin-right: 15px; font-weight: bold;">✓</span> 
+                    Comprehensive Loan History Tracking
+                </li>
+                <li style="margin-bottom: 15px; display: flex; align-items: center; font-size: 1.1rem;">
+                    <span style="color: var(--secondary); margin-right: 15px; font-weight: bold;">✓</span> 
+                    Secure & Encrypted Financial Privacy
+                </li>
+                <li style="margin-bottom: 15px; display: flex; align-items: center; font-size: 1.1rem;">
+                    <span style="color: var(--secondary); margin-right: 15px; font-weight: bold;">✓</span> 
+                    Interactive Performance Dashboards
+                </li>
+            </ul>
+        </div>
+
+        <!-- Form Side -->
+        <div class="form-side">
+            <div class="glass" style="padding: 50px; width: 100%; max-width: 450px;">
+                <h2 style="margin-bottom: 30px; text-align: center;">Sign In</h2>
+                
+                {% if error %}
+                <p style="color: var(--danger); text-align: center; margin-bottom: 15px;">{{ error }}</p>
+                {% endif %}
+
+                <form method="POST" action="/handle_login">
+                    <div style="margin-bottom: 20px;">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div style="margin-bottom: 30px;">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" style="width: 100%;">Access Dashboard</button>
+                </form>
+                <p style="text-align: center; margin-top: 25px;">New? <a href="/register" style="color: var(--secondary); text-decoration: none; font-weight: bold;">Create Account</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

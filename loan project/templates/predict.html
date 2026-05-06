@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Analysis | LoanAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="ai-loader">
+        <div class="scanner"></div>
+        <h2 style="margin-top: 30px; letter-spacing: 5px;">AI IS ANALYZING</h2>
+        <p style="color: var(--secondary);">Cross-referencing credit history...</p>
+    </div>
+
+    <div class="blob blob-1"></div>
+    
+    <div style="max-width: 800px; margin: 60px auto; padding: 20px;">
+        <div class="glass" style="padding: 40px;">
+            <h2 style="text-align: center; margin-bottom: 40px;">Loan Eligibility Analysis</h2>
+            
+            <form id="loanForm" method="POST" action="/analyze" onsubmit="return startAnalysis()">
+                
+                <!-- STEP 1 -->
+                <div id="step1">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div><label>Gender</label><select name="Gender"><option value="1">Male</option><option value="0">Female</option></select></div>
+                        <div><label>Married</label><select name="Married"><option value="1">Yes</option><option value="0">No</option></select></div>
+                        <div><label>Dependents</label><input type="number" name="Dependents" value="0"></div>
+                        <div><label>Education</label><select name="Education"><option value="1">Graduate</option><option value="0">Undergrad</option></select></div>
+                        <div style="grid-column: span 2;"><label>Self Employed</label><select name="Self_Employed"><option value="1">Yes</option><option value="0">No</option></select></div>
+                    </div>
+                    <button type="button" onclick="toggleStep(2)" style="margin-top: 30px; width: 100%;">Next: Financial Data →</button>
+                </div>
+
+                <!-- STEP 2 -->
+                <div id="step2" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div><label>Income ($)</label><input type="number" name="ApplicantIncome" required></div>
+                        <div><label>Co-Income ($)</label><input type="number" name="CoapplicantIncome" value="0"></div>
+                        <div><label>Loan Amount ($k)</label><input type="number" name="LoanAmount" required></div>
+                        <div><label>Term (Months)</label><input type="number" name="Loan_Amount_Term" value="360"></div>
+                        <div><label>Credit History</label><select name="Credit_History"><option value="1">Good</option><option value="0">Poor</option></select></div>
+                        <div><label>Property Area</label><select name="Property_Area"><option value="0">Rural</option><option value="1">Semiurban</option><option value="2">Urban</option></select></div>
+                    </div>
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button type="button" onclick="toggleStep(1)" style="background: #333; flex: 1;">Back</button>
+                        <button type="submit" style="flex: 2;">Run AI Prediction</button>
+                    </div>
+                </div>
+            </form>
+
+            {% if result %}
+            <div class="glass" style="margin-top: 40px; padding: 40px; text-align: center; border: 1px solid var(--secondary);">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 50px; flex-wrap: wrap;">
+                    <!-- Circular Gauge -->
+                    <div style="position: relative; width: 150px; height: 150px;">
+                        <svg style="transform: rotate(-90deg); width: 150px; height: 150px;">
+                            <circle cx="75" cy="75" r="65" fill="transparent" stroke="rgba(255,255,255,0.1)" stroke-width="12"></circle>
+                            <circle cx="75" cy="75" r="65" fill="transparent" stroke="var(--secondary)" stroke-width="12" 
+                                    stroke-dasharray="408" stroke-dashoffset="{{ 408 - (408 * score / 100) }}" 
+                                    stroke-linecap="round" style="transition: stroke-dashoffset 2s ease-out;"></circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <span style="font-size: 2rem; font-weight: bold;">{{ score }}%</span>
+                        </div>
+                    </div>
+
+                    <div style="text-align: left;">
+                        <p style="color: var(--secondary); text-transform: uppercase; letter-spacing: 2px;">Verdict</p>
+                        <h1 style="font-size: 3rem; color: {{ '#00e676' if result == 'Approved' else '#ff5252' }}">{{ result }}</h1>
+                        <p>Risk: <strong style="color: white;">{{ risk }}</strong></p>
+                        <a href="/dashboard" style="color: var(--secondary); text-decoration: none; display: block; margin-top: 15px;">← Back to Home</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function toggleStep(step) {
+            document.getElementById('step1').style.display = (step === 1) ? 'block' : 'none';
+            document.getElementById('step2').style.display = (step === 2) ? 'block' : 'none';
+        }
+        function startAnalysis() {
+            document.getElementById('ai-loader').style.display = 'flex';
+            return true;
+        }
+    </script>
+</body>
+</html>
